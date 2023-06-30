@@ -23,7 +23,7 @@ describe('LoginController', function () {
   it('Ao não receber um username retorna erro', async function () {
     // Arrange
     req.body = loginMock.noUserLoginReq;
-    const serviceResponse: ServiceResponse<Token> = { status: 'INVALID_DATA', data: loginMock.noUsernamePasswordError.data };;
+    const serviceResponse: ServiceResponse<Token> = { status: 'INVALID_DATA', data: loginMock.noUsernamePasswordError.data };
     sinon.stub(loginService, 'verifyLogin').resolves(serviceResponse);
     // Act
     await loginController.login(req, res);

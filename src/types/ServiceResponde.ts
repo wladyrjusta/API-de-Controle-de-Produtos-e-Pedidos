@@ -1,4 +1,5 @@
-export type ServiceErrorType = 'INVALID_DATA' | 'UNAUTHORIZED' | 'NOT_FOUND';
+export type ServiceErrorType = 'INVALID_DATA'
+| 'UNAUTHORIZED' | 'NOT_FOUND' | 'UNPROCESSABLE_ENTITY';
 
 export type ServiceResponseError = {
   status: ServiceErrorType;
