@@ -6,5 +6,6 @@ const productsRouter = Router();
 const path = '/products';
 
 productsRouter.post(path, productController.create);
+productsRouter.get(path, productController.listAll);
 
 export default productsRouter;

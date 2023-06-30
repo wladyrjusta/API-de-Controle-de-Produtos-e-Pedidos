@@ -20,7 +20,8 @@ export default {
       },
       orderId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: null,
         field: 'order_id',
       },
     });

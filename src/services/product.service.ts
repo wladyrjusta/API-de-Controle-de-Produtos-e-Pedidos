@@ -1,4 +1,4 @@
-import ProductModel from '../database/models/product.model';
+import ProductModel, { ProductSequelizeModel } from '../database/models/product.model';
 import { ProductResponse, ProductParams } from '../types/Product';
 import { ServiceResponse } from '../types/ServiceResponde';
 import validateNewProductEntries from '../utils/validateNewProductEntries';
@@ -20,6 +20,17 @@ async function createProduct(product: ProductParams): Promise<ServiceResponse<Pr
   };
 }
 
+async function listAllProducts(): Promise<ServiceResponse<ProductSequelizeModel[]>> {
+  const products = await ProductModel.findAll();
+
+  if (products.length === 0) {
+    return { status: 'NOT_FOUND', data: { message: 'Nenhum produto cadstrado' } };
+  }
+
+  return { status: 'SUCCESSFUL', data: products };
+}
+
 export default {
   createProduct,
+  listAllProducts,
 };

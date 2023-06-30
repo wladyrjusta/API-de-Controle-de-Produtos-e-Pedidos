@@ -2,7 +2,7 @@ export type Product = {
   id: number;
   name: string | boolean | number;
   price: string | boolean | number;
-  orderId: number;
+  orderId: number | null;
 };
 
 export type ProductResponse = {
@@ -14,5 +14,5 @@ export type ProductResponse = {
 export type ProductParams = {
   name: string | boolean | number;
   price: string | boolean | number; 
-  orderId: number;
+  orderId: number | null;
 };

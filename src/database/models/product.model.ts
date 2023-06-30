@@ -24,7 +24,8 @@ const ProductModel: ProductSequelizeModelCreator = db.define('Product', {
   },
   orderId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   },
 }, {
   tableName: 'products',
