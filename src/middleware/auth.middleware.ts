@@ -1,7 +1,5 @@
-/* import { Request, Response, NextFunction } from 'express';
-
+import { Request, Response, NextFunction } from 'express';
 import jwtUtil from '../utils/jwtUtil';
-import UserModel from '../database/models/user.model';
 
 async function authMiddleware(
   req: Request,
@@ -15,12 +13,12 @@ async function authMiddleware(
   }
 
   try {
-    const decoded = await jwtUtil.verify(authorization);
-    const user = await UserModel.findOne({
-      where: { username: decoded.username },
-    });
+    const data = authorization.split(' ');
+    const decoded = jwtUtil.verify(data[1]);
 
-    if (!user) return res.status(401).json({ message: 'Invalid token' });
+    if (data[0] !== 'Bearer' || !decoded.id) {
+      return res.status(401).json({ message: 'Invalid token' });
+    }
 
     next();
   } catch (e) {
@@ -28,4 +26,4 @@ async function authMiddleware(
   }  
 }
 
-export default authMiddleware; */
+export default authMiddleware;

@@ -9,3 +9,8 @@ export type OrderProductIds = {
   userId: number;
   productIds?: number[] | undefined;
 };
+
+export type CreateOrderReturn = {
+  userId: number;
+  productIds?: number[] | undefined;
+};

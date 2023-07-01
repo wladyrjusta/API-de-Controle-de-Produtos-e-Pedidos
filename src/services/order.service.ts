@@ -1,4 +1,4 @@
-import { OrderProductIds } from '../types/Order';
+import { OrderProductIds, CreateOrderReturn } from '../types/Order';
 import OrderModel from '../database/models/order.model';
 import ProductModel from '../database/models/product.model';
 import { ServiceResponse } from '../types/ServiceResponde';
@@ -24,6 +24,30 @@ async function listAllOrders(): Promise<ServiceResponse<OrderProductIds[]>> {
   return { status: 'SUCCESSFUL', data: orderProductIds };
 }
 
+async function createOrders(
+  productIds: number[],
+  userId: number,
+): Promise<ServiceResponse<CreateOrderReturn>> {
+  const newOrder = await OrderModel.create({ userId }); 
+
+  const updateProducts = productIds
+    .map(async (proId) => {
+      const { id } = newOrder.dataValues;
+      
+      return ProductModel
+        .update({ orderId: id }, { where: { id: proId }, fields: ['orderId'] });
+    });
+
+  await Promise.all(updateProducts);
+
+  return { status: 'SUCCESSFUL',
+    data: {
+      userId,
+      productIds,
+    } };
+}
+
 export default {
   listAllOrders,
+  createOrders,
 };
