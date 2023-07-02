@@ -14,13 +14,13 @@ async function create(req: Request, res: Response) {
 }
 
 async function listAll(req: Request, res: Response) {
-  const newProduct = await productService.listAllProducts();
+  const serviceResponse = await productService.listAllProducts();
 
-  if (newProduct.status !== 'SUCCESSFUL') {
-    return res.status(mapStatusHTTP(newProduct.status)).json(newProduct.data);
+  if (serviceResponse.status !== 'SUCCESSFUL') {
+    return res.status(mapStatusHTTP(serviceResponse.status)).json(serviceResponse.data);
   }
 
-  return res.status(200).json(newProduct.data);
+  return res.status(200).json(serviceResponse.data);
 }
 
 export default {

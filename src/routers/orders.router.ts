@@ -8,7 +8,7 @@ const ordersRouter = Router();
 const path = '/orders';
 
 ordersRouter.get(path, orderController.listAll);
-ordersRouter.use(authMiddleware);
+ordersRouter.use(authMiddleware.authMiddleware);
 ordersRouter.use(validateNewOrder);
 ordersRouter.post(path, orderController.create);
 

@@ -8,6 +8,7 @@ import productMock from '../../mocks/product.mock';
 import productService from '../../../src/services/product.service';
 import { ServiceResponse } from '../../../src/types/ServiceResponde';
 import { ProductResponse } from '../../../src/types/Product';
+import ProductModel, { ProductSequelizeModel } from '../../../src/database/models/product.model';
 
 chai.use(sinonChai);
 
@@ -101,6 +102,29 @@ describe('ProductsController', function () {
       // Assert
       expect(res.status).to.have.been.calledWith(201);
       expect(res.json).to.have.been.calledWith(productMock.successResponse.data);
+    });
+  });
+  describe('Função listAllProducts', function () {
+    it('retorna um array com produtos cadastrados', async function () {
+      // Arrange
+      const mockFindAllReturn = productMock.findAllReturn.map((product) => ProductModel.build(product));
+      const serviceResponse: ServiceResponse<ProductSequelizeModel[]> = { status: 'SUCCESSFUL', data: mockFindAllReturn };
+      sinon.stub(productService, 'listAllProducts').resolves(serviceResponse);
+      // Act
+      await productController.listAll(req, res);
+      // Assert
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith(mockFindAllReturn);
+    });
+    it('retorna um erro caso não existam produtos cadastrados', async function () {
+      // Arrange
+      const sttusResponse = 'NOT_FOUND';
+      sinon.stub(ProductModel, 'findAll').resolves([]);
+      // Act
+      await productController.listAll(req, res);
+      // Assert
+      expect(res.status).to.have.been.calledWith(404);
+      expect(res.json).to.have.been.calledWith({ message: 'Nenhum produto cadstrado' });
     });
   });
 });

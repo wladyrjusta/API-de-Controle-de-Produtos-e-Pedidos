@@ -13,7 +13,7 @@ async function listAllOrders(): Promise<ServiceResponse<OrderProductIds[]>> {
 
   if (orders.length === 0) {
     return { status: 'NOT_FOUND', data: { message: 'Nenhum produto cadstrado' } };
-  }
+  } 
 
   const orderProductIds = orders.map(({ dataValues }) => ({
     id: dataValues.id,
@@ -38,7 +38,7 @@ async function createOrders(
         .update({ orderId: id }, { where: { id: proId }, fields: ['orderId'] });
     });
 
-  await Promise.all(updateProducts);
+  await Promise.all(updateProducts);  
 
   return { status: 'SUCCESSFUL',
     data: {

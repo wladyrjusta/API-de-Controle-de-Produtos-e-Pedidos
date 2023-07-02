@@ -9,7 +9,7 @@ describe('ProductsService', function () {
   beforeEach(function () {
     sinon.restore();
   });
-  describe('Ao receber um name inválido, retorna erros', function () {
+  describe('Função CreateProduct ao receber um name inválido, retorna erros', function () {
     it('name is required', async function () {
       // Arrange
       const parameters = productMock.noNameReq;
@@ -38,7 +38,7 @@ describe('ProductsService', function () {
       expect(serviceResponse.data).to.be.deep.equal(productMock.nameLengthError.data);
     });
   });
-  describe('Ao receber um price inválido, retorna erros', function () {
+  describe('Função CreateProduct ao receber um price inválido, retorna erros', function () {
     it('price is required', async function () {
       // Arrange
       const parameters = productMock.noPriceReq;
@@ -67,7 +67,7 @@ describe('ProductsService', function () {
       expect(serviceResponse.data).to.be.deep.equal(productMock.priceLengthError.data);
     });
   });
-  describe('Ao receber um name e price válidos', function () {
+  describe('Função CreateProduct ao receber um name e price válidos', function () {
     it('retorna o produto cadastrado com novo id', async function () {
       // Arrange
       const parameters = productMock.validReq;
@@ -78,6 +78,28 @@ describe('ProductsService', function () {
       // Assert
       expect(serviceResponse.status).to.be.equal(productMock.successResponse.status);
       expect(serviceResponse.data).to.be.deep.equal(productMock.successResponse.data);
+    });
+  });
+  describe('Função listAllProducts', function () {
+    it('retorna um array com produtos cadastrados', async function () {
+      // Arrange
+      const mockFindAllReturn = productMock.findAllReturn.map((product) => ProductModel.build(product));
+      sinon.stub(ProductModel, 'findAll').resolves(mockFindAllReturn);
+      // Act
+      const serviceResponse = await productService.listAllProducts();
+      // Assert
+      expect(serviceResponse.status).to.be.equal(productMock.successResponse.status);
+      expect(serviceResponse.data).to.be.deep.equal(mockFindAllReturn);
+    });
+    it('retorna um erro caso não existam produtos cadastrados', async function () {
+      // Arrange
+      const sttusResponse = 'NOT_FOUND';
+      sinon.stub(ProductModel, 'findAll').resolves([]);
+      // Act
+      const serviceResponse = await productService.listAllProducts();
+      // Assert
+      expect(serviceResponse.status).to.be.equal(sttusResponse);
+      expect(serviceResponse.data).to.be.deep.equal({ message: 'Nenhum produto cadstrado' });
     });
   });
 });
